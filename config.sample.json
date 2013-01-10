@@ -1,3 +1,4 @@
 {
-  "site.dev": "/absolute/path/to/the/files"
+  "site.dev": "/absolute/path/to/the/files",
+  "other.site.dev": "host.to.proxy.to:8050"
 }
