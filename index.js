@@ -1,36 +1,31 @@
-var connect = require('connect')
-  , http = require('http')
-  , http_proxy = require('http-proxy')
+var fs = require('fs')
   , path = require('path')
-  , config = require('./config.json')
-  , static_server = connect()
-  , proxy_options = {
-      hostnameOnly: true,
-      router: {}
-    }
-  , port = {
-      proxy: process.argv[2] || process.env.PORT || 8000,
-      static_server: 9999
-    };
+  , spawn = require('child_process').spawn
+  , config_file = path.resolve(__dirname, process.env.CONFIG_FILE || './config.json')
+  , port = process.argv[2] || process.env.PORT || 8000;
 
-static_server
-  .use(connect.logger('dev'));
+var attach = function (child) {
+  child.stdout.pipe(process.stdout);
+  child.stderr.pipe(process.stderr);
+  child.on('exit', function (code) {
+    console.log('child exited with code ' + code);
+  });
+};
 
-Object.keys(config).forEach(function (host) {
-  if( config[host].slice(0,1) === '/' ) {
-    static_server.use(connect.vhost(host, connect.static(config[host])));
-    proxy_options.router[host] = host + ':' + port.static_server;
-  } else {
-    proxy_options.router[host] = config[host];
+var reboot = (function () {
+  var distra;
+  return function () {
+    if( distra ) distra.kill();
+    console.log('\n========= restarting =========\n');
+    distra = spawn('node', ['distra.js', port]);
+    attach(distra);
+  };
+}());
+
+fs.watch(config_file, function (event, filename) {
+  if( event === 'change' ) {
+    reboot();
   }
 });
 
-console.log(proxy_options.router);
-
-http_proxy.createServer(proxy_options).listen(port.proxy, function () {
-  console.log('proxy listening on %d', port.proxy);
-});
-
-http.createServer(static_server).listen(port.static_server, function () {
-  console.log('static listening on %d', port.static_server);
-});
+reboot();
