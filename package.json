@@ -1,12 +1,13 @@
 {
-  "name": "proxa",
+  "name": "distra",
   "version": "0.0.0",
-  "description": "ERROR: No README.md file found!",
+  "description": "A vhost thing.",
   "main": "index.js",
-  "scripts": {
-    "test": "mocha"
-  },
+  "scripts": {},
   "repository": "",
   "author": "Tom Ashworth <tom@phuu.net>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "connect": "~2.7.1"
+  }
 }
