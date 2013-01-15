@@ -8,13 +8,15 @@ var connect = require('connect')
   , hosts_tag = 'distra'
   , proxy_options = { hostnameOnly: true, router: {} }
   , port = {
-      proxy: process.argv[2] || process.env.PORT || 8000,
+      proxy: parseInt(process.argv[2], 10) || process.env.PORT || 9876,
       static_server: 9999
     };
 
+// Log static requests
 static_server
   .use(connect.logger('dev'));
 
+// Store hostnames for the hostsfile
 var localhost = {ip: '127.0.0.1', names: []};
 
 Object.keys(config).forEach(function (host) {
@@ -27,23 +29,29 @@ Object.keys(config).forEach(function (host) {
   }
 });
 
-hf.readHostsFile(function (err, original) {
-  if( err ) throw err;
+// Update the user's hostsfile, unless they specify --no-hosts
+if( process.argv.indexOf('--no-hosts') === -1 ) {
 
-  var file = hf.removeTagged(original, hosts_tag);
-  file = hf.addHosts(file, [localhost], hosts_tag);
-  hf.replaceHostsFile(file, function (err) {
-    if (err) throw err;
-    console.log('hostsfile updated');
+  hf.readHostsFile(function (err, original) {
+    if( err ) throw err;
+    var file = hf.removeTagged(original, hosts_tag);
+    file = hf.addHosts(file, [localhost], hosts_tag);
+    hf.replaceHostsFile(file, function (err) {
+      if (err) throw err;
+      console.log('hostsfile updated');
+    });
   });
-});
 
+}
+
+// Boot up the proxy server!
 http_proxy
   .createServer(proxy_options)
   .listen(port.proxy, function () {
     console.log('proxy listening on %d', port.proxy);
   });
 
+// Boot up the static server!
 http
   .createServer(static_server)
   .listen(port.static_server, function () {

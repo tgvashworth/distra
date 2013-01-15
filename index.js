@@ -17,7 +17,7 @@ var reboot = (function () {
   return function () {
     if( distra ) distra.kill();
     console.log('\n========= restarting =========\n');
-    distra = spawn('node', ['distra.js', port]);
+    distra = spawn('node', ['distra.js'].concat(process.argv.slice(2)));
     attach(distra);
   };
 }());

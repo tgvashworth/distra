@@ -1,6 +1,6 @@
 # distra
 
-Use distra to give serve static directories while developing, and to give servers running on your computer nice URLs.
+Use distra to give serve static directories while developing, and to give servers running on your computer nice URLs. It also rewrites your hostsfile so you never have worry.
 
 Set up hosts (urls) and routes (directories or proxy targets (moar urls)) using JSON, and then feel like a boss.
 
@@ -22,7 +22,9 @@ cd distra && npm install
 
 ## Configuration
 
-Rename the `config.sample.json` file to `config.json` and add your own setup. Any hosts you add will also need to go in your `hosts` file. On OSX, that's `/etc/hosts`.
+Rename the `config.sample.json` file to `config.json` and add your own setup.
+
+Any hosts you add will also need to go in your `hosts` file. Distra does this for you, unless you specify pass it `--no-hosts`.
 
 Here's an example.
 
@@ -44,11 +46,23 @@ In the example above, requests made to `http://mysite.dev/` will be proxied thro
 
 ## Start
 
+### By default
+
 `node .`
 
-Although, I reccommend starting on port 80 so you don't have to mess around with ports!
+This will fire up the proxy server on a default port, and you can get to work straight away with the hosts you specified and the port it gives you.
+
+### Portsaway!
+
+I recommend starting on port 80 so you don't have to mess around with ports!
 
 `sudo node . 80`
+
+### hostsfile
+
+By default, distra modifies your hostsfile. To turn this off, pass `--no-hosts`.
+
+`sudo node . 80 --no-hosts`
 
 ## License
 
