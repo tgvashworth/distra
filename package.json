@@ -9,6 +9,7 @@
   "license": "MIT",
   "dependencies": {
     "connect": "~2.7.1",
-    "http-proxy": "~0.8.7"
+    "http-proxy": "~0.8.7",
+    "hostsfile": "~1.0.0"
   }
 }
