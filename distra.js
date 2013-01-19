@@ -17,10 +17,10 @@ static_server
   .use(connect.logger('dev'));
 
 // Store hostnames for the hostsfile
-var localhost = {ip: '127.0.0.1', names: []};
+var hosts = [];
 
 Object.keys(config).forEach(function (host) {
-  localhost.names.push(host);
+  hosts.push({ip: '127.0.0.1', names: [host]});
   if( config[host].slice(0,1) === '/' ) {
     static_server.use(connect.vhost(host, connect.static(config[host])));
     proxy_options.router[host] = host + ':' + port.static_server;
@@ -35,7 +35,7 @@ if( process.argv.indexOf('--no-hosts') === -1 ) {
   hf.readHostsFile(function (err, original) {
     if( err ) throw err;
     var file = hf.removeTagged(original, hosts_tag);
-    file = hf.addHosts(file, [localhost], hosts_tag);
+    file = hf.addHosts(file, hosts, hosts_tag);
     hf.replaceHostsFile(file, function (err) {
       if (err) throw err;
       console.log('hostsfile updated');
