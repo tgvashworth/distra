@@ -1,10 +1,14 @@
 # distra
 
-Use distra to give serve static directories while developing, and to give servers running on your computer nice URLs. It also rewrites your hostsfile so you never have worry.
+Use distra to give serve static directories while developing, and to give servers running on your computer nice URLs.
 
 Set up hosts (urls) and routes (directories or proxy targets (moar urls)) using JSON, and then feel like a boss.
 
-I had so many servers, particularly serving static files, that I never knew what was being served and on which port. So I built this, and I'll never have to care again... and neither will you.
+It also adds to your hosts file (safely) so you never have worry about that either!
+
+### Why?
+
+I had so many servers, particularly serving static files, that I never knew what was being served and on which port. So I built this so I'd never have to care again... and neither will you.
 
 ## Install
 
@@ -13,7 +17,7 @@ Distra requires:
 * Node
 * npm
 
-Clone the repository, tho it may be an npm module at some point.
+Clone the repository (tho it may be an npm module at some point)
 
 ```bash
 git clone git://github.com/phuu/distra.git
@@ -30,16 +34,9 @@ Here's an example.
 
 ```json
 {
-  "mysite.dev": "localhost:4000",
-  "project": "/Users/you/sites/project"
+  "mysite.dev":   "localhost:4000",
+  "project":      "/Users/you/sites/project"
 }
-```
-
-In your `hosts` file:
-
-```
-127.0.0.1 mysite.dev
-127.0.0.1 project
 ```
 
 In the example above, requests made to `http://mysite.dev/` will be proxied through to the server running on port 4000 (a [Jekyll](https://github.com/mojombo/jekyll) server, perhaps). Requests made to `project` will be served static files from the directory specified.
@@ -63,6 +60,15 @@ I recommend starting on port 80 so you don't have to mess around with ports!
 By default, distra modifies your hostsfile. To turn this off, pass `--no-hosts`.
 
 `sudo node . 80 --no-hosts`
+
+If you don't use the built hosts file functionality you'll need to add any new hosts to your hosts file. On OSX you'll find it at `/etc/hosts`.
+
+It might look like this, for example:
+
+```
+127.0.0.1 mysite.dev
+127.0.0.1 project
+```
 
 ## License
 
