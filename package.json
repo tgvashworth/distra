@@ -2,6 +2,10 @@
   "name": "distra",
   "version": "0.0.0",
   "description": "A vhost thing.",
+  "preferGlobal": "true",
+  "bin": {
+    "distra": "index.js"
+  },
   "main": "index.js",
   "scripts": {},
   "repository": "",
