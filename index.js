@@ -1,8 +1,15 @@
 var fs = require('fs')
   , path = require('path')
   , spawn = require('child_process').spawn
-  , config_file = path.resolve(__dirname, process.env.CONFIG_FILE || './config.json')
+  , home_dir = process.env.HOME
+  , config_file = path.resolve(home_dir, '.distra.json')
   , port = process.argv[2] || process.env.PORT || 8000;
+
+try {
+  fs.appendFileSync(config_file, '');
+} catch (e) {
+  throw new Error("Could not create file.");
+}
 
 var attach = function (child) {
   child.stdout.pipe(process.stdout);
@@ -17,7 +24,7 @@ var reboot = (function () {
   return function () {
     if( distra ) distra.kill();
     console.log('\n========= restarting =========\n');
-    distra = spawn('node', ['distra.js'].concat(process.argv.slice(2)));
+    distra = spawn('node', ['distra.js', config_file].concat(process.argv.slice(2)));
     attach(distra);
   };
 }());

@@ -3,12 +3,12 @@ var connect = require('connect')
   , http_proxy = require('http-proxy')
   , hf = require('hostsfile')
   , path = require('path')
-  , config = require('./config.json')
   , static_server = connect()
+  , config = require(process.argv[2])
   , hosts_tag = 'distra'
   , proxy_options = { hostnameOnly: true, router: {} }
   , port = {
-      proxy: parseInt(process.argv[2], 10) || process.env.PORT || 9876,
+      proxy: parseInt(process.argv[3], 10) || process.env.PORT || 9876,
       static_server: 9999
     };
 
