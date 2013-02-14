@@ -1,11 +1,75 @@
 #!/usr/bin/env node
 
-var fs = require('fs')
+var argv = require('optimist').argv
+  , fs = require('fs')
   , path = require('path')
   , spawn = require('child_process').spawn
   , home_dir = process.env.HOME
   , config_file = path.resolve(home_dir, '.distra.json')
-  , port = process.argv[2] || process.env.PORT || 8000;
+  , port = process.argv[2] || argv.port || process.env.PORT || 8000;
+
+var config = require(config_file)
+  , target = path.resolve()
+  , host = path.basename(target);
+
+// Add a new host
+if( argv._[0] === 'add' ) {
+
+  // Default:
+  // No further arguments passed.
+  // Serve this directory with using its name
+
+  // One argument passed.
+  // Use as hostname for current dir.
+  if( argv._.length >= 2 ) {
+    host = argv._[1];
+  }
+
+  // Two arguments passed.
+  // Use as hostname for target.
+  if( argv._.length >= 3 ) {
+    target = argv._[2];
+  }
+
+  if( config[host] ) {
+    console.log("Host %s already in use.", host);
+    process.exit();
+  } else {
+    config[host] = target;
+    fs.writeFileSync(config_file, JSON.stringify(config, null, 2));
+    console.log("Host %s pointing to %s added.", host, target);
+  }
+
+  process.exit();
+}
+
+// Remove a host
+if( argv._[0] === 'rm' ) {
+  var config = require(config_file);
+
+  // Default:
+  // No further arguments passed.
+  // Remove this directory.
+
+  // One argument passed.
+  // Remove that host.
+  if( argv._.length >= 2 ) {
+    host = argv._[1];
+  }
+
+  if( !config[host] ) {
+    console.log("No such host (%s) found.", host);
+    process.exit();
+  } else {
+    delete config[host];
+    fs.writeFileSync(config_file, JSON.stringify(config, null, 2));
+    console.log("Host %s removed.", host);
+  }
+
+  process.exit();
+}
+
+if( !parseInt(argv._[0], 10) ) process.exit();
 
 try {
   fs.appendFileSync(config_file, '');
