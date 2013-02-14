@@ -8,6 +8,10 @@ var argv = require('optimist').argv
   , config_file = path.resolve(home_dir, '.distra.json')
   , port = process.argv[2] || argv.port || process.env.PORT || 8000;
 
+// ======================
+// Command line usage
+// ======================
+
 var config = require(config_file)
   , target = path.resolve()
   , host = path.basename(target);
@@ -69,6 +73,11 @@ if( argv._[0] === 'rm' ) {
   process.exit();
 }
 
+// ======================
+// Server
+// ======================
+
+// If we were passed a port, get moving on it
 if( !parseInt(argv._[0], 10) ) process.exit();
 
 try {
