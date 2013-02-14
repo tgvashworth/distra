@@ -1,14 +1,14 @@
 {
   "name": "distra",
   "version": "0.0.1",
-  "description": "A vhost thing.",
+  "description": "A vhost proxy doodad thing.",
   "preferGlobal": "true",
   "bin": {
     "distra": "index.js"
   },
   "main": "index.js",
   "scripts": {},
-  "repository": "",
+  "repository": "git://github.com/phuu/distra.git",
   "author": "Tom Ashworth <tom@phuu.net>",
   "license": "MIT",
   "dependencies": {
