@@ -77,8 +77,8 @@ if( argv._[0] === 'rm' ) {
 // Server
 // ======================
 
-// If we were passed a port, get moving on it
-if( !parseInt(argv._[0], 10) ) process.exit();
+// If we were passed a port, get moving on it (quit if we weren't)
+if( argv._.length !== 0 && !parseInt(argv._[0], 10) ) process.exit();
 
 try {
   fs.appendFileSync(config_file, '');
@@ -99,7 +99,7 @@ var reboot = (function () {
   return function () {
     if( distra ) distra.kill();
     console.log('\n========= restarting =========\n');
-    distra = spawn('node', ['distra.js', config_file].concat(process.argv.slice(2)));
+    distra = spawn('node', [path.resolve(__dirname, 'distra.js'), config_file].concat(process.argv.slice(2)));
     attach(distra);
   };
 }());
