@@ -95,9 +95,6 @@ if( argv._[0] === 'config' ) {
 // Server
 // ======================
 
-// If we were passed a port, get moving on it (quit if we weren't)
-if( argv._.length !== 0 && !parseInt(argv._[0], 10) ) process.exit();
-
 try {
   fs.appendFileSync(config_file, '');
 } catch (e) {

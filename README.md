@@ -1,8 +1,10 @@
 # distra
 
-Use distra to give serve static directories while developing, and to give servers running on your computer nice URLs.
+distra is a tool for building websites.
 
-Set up hosts (urls) and routes (directories or proxy targets (moar urls)) using JSON, and then feel like a boss.
+Use it to serve static files and directories, and, for more complex stuff, to give servers running on your computer nice URLs.
+
+Set up hosts and routes (directories or proxy targets (moar urls)) using JSON, and then feel like a boss.
 
 It also adds to your hosts file (safely) so you never have worry about that either!
 
@@ -14,21 +16,56 @@ I had so many servers, particularly serving static files, that I never knew what
 
 Distra requires:
 
+* OS X (yeah, sorry)
 * Node
 * npm
 
-Clone the repository (tho it may be an npm module at some point)
-
 ```bash
-git clone git://github.com/phuu/distra.git
-cd distra && npm install
+npm install -g distra
+distra
 ```
+
+Wahey! You're up.
+
+But it won't do much yet – you need to configure it.
 
 ## Configuration
 
-Rename the `config.sample.json` file to `config.json` and add your own setup.
+Distra is configured from the `.distra.json` file in your home directory, but you don't ever have to touch this file if you don't want to.
 
-Any hosts you add will also need to go in your `hosts` file. Distra does this for you, unless you specify pass it `--no-hosts`.
+### Adding a host
+
+To add a host, use `distra add`.
+
+```bash
+distra add [host] [directory or url]
+```
+
+The `host` and `directory or url` are both optional. If you omit the `directory or url` distra will serve the current directory you are in from the using the `host` you specify.
+
+If you omit both, distra will serve the current directory with the name of the directory as the host.
+
+#### Try it:
+
+Head to a directory with some `.html` files in it, lets say it's called `website`.
+
+```bash
+distra add
+```
+
+Assuming distra is started (just use `distra`), you will find that you can go to `http://website:9876/` and access those files.
+
+### Removing a host
+
+To remove a host, use `distra rm`.
+
+```bash
+distra rm [host]
+```
+
+### The config file
+
+The config file will generally be found at `~/.distra.json`.
 
 Here's an example.
 
@@ -41,34 +78,19 @@ Here's an example.
 
 In the example above, requests made to `http://mysite.dev/` will be proxied through to the server running on port 4000 (a [Jekyll](https://github.com/mojombo/jekyll) server, perhaps). Requests made to `project` will be served static files from the directory specified.
 
-## Start
+## Tips
 
-### By default
+### Ports
 
-`node .`
+You can specify the port on which you want distra to start.
 
-This will fire up the proxy server on a default port, and you can get to work straight away with the hosts you specified and the port it gives you.
+`distra 1337`
 
 ### Portsaway!
 
 I recommend starting on port 80 so you don't have to mess around with ports!
 
-`sudo node . 80`
-
-### hostsfile
-
-By default, distra modifies your hostsfile. To turn this off, pass `--no-hosts`.
-
-`sudo node . 80 --no-hosts`
-
-If you don't use the built hosts file functionality you'll need to add any new hosts to your hosts file. On OSX you'll find it at `/etc/hosts`.
-
-It might look like this, for example:
-
-```
-127.0.0.1 mysite.dev
-127.0.0.1 project
-```
+`sudo distra 80`
 
 ## License
 
