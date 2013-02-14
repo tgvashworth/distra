@@ -73,6 +73,24 @@ if( argv._[0] === 'rm' ) {
   process.exit();
 }
 
+// Show the current configuration
+if( argv._[0] === 'config' ) {
+  var config = require(config_file);
+
+  var pad = function (str, len) {
+    while( str.length < len ) {
+      str += ' ';
+    }
+    return str;
+  };
+
+  Object.keys(config).forEach(function (host) {
+    console.log('%s : %s', pad(host, 25), config[host]);
+  });
+
+  process.exit();
+}
+
 // ======================
 // Server
 // ======================
