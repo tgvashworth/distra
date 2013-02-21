@@ -8,6 +8,12 @@ var argv = require('optimist').argv
   , config_file = path.resolve(home_dir, '.distra.json')
   , port = process.argv[2] || argv.port || process.env.PORT || 8000;
 
+try {
+  fs.appendFileSync(config_file, '');
+} catch (e) {
+  throw new Error("Could not create file.");
+}
+
 // ======================
 // Command line usage
 // ======================
@@ -94,12 +100,6 @@ if( argv._[0] === 'config' ) {
 // ======================
 // Server
 // ======================
-
-try {
-  fs.appendFileSync(config_file, '');
-} catch (e) {
-  throw new Error("Could not create file.");
-}
 
 var attach = function (child) {
   child.stdout.pipe(process.stdout);
