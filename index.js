@@ -9,8 +9,10 @@ var argv = require('optimist').argv
   , port = process.argv[2] || argv.port || process.env.PORT || 8000;
 
 try {
-  if (!fs.existsSync(config_file) || fs.readFileSync(config_file) === '') {
-    fs.writeFileSync(config_file, '{}');
+  if (!fs.existsSync(config_file) ||
+      fs.readFileSync(config_file, 'utf8') === '') {
+    console.log("Missing or empty config file. Creating it.");
+    fs.writeFileSync(config_file, '{}', 'utf8');
   }
 } catch (e) {
   throw new Error("Could not open or create config file.");
