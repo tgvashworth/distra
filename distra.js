@@ -1,5 +1,6 @@
 var connect = require('connect')
   , http = require('http')
+  , gzip = require('connect-gzip')
   , http_proxy = require('http-proxy')
   , hf = require('hostsfile')
   , path = require('path')
@@ -10,6 +11,9 @@ var connect = require('connect')
   , port = {
       proxy: parseInt(process.argv[3], 10) || process.env.PORT || 9876,
       static_server: 9999
+    }
+  , gzip_options = {
+      matchType: /.*/
     };
 
 // Log static requests
@@ -22,7 +26,7 @@ var hosts = [];
 Object.keys(config).forEach(function (host) {
   hosts.push({ip: '127.0.0.1', names: [host]});
   if( config[host].slice(0,1) === '/' ) {
-    static_server.use(connect.vhost(host, connect.static(config[host])));
+    static_server.use(connect.vhost(host, gzip.staticGzip(config[host], gzip_options)));
     proxy_options.router[host] = host + ':' + port.static_server;
   } else {
     proxy_options.router[host] = config[host];

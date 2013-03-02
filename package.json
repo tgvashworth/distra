@@ -15,6 +15,7 @@
     "connect": "~2.7.1",
     "http-proxy": "~0.8.7",
     "hostsfile": "~1.0.0",
-    "optimist": "~0.3.5"
+    "optimist": "~0.3.5",
+    "connect-gzip": "~0.1.6"
   }
 }
