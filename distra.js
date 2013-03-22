@@ -33,8 +33,8 @@ Object.keys(config).forEach(function (host) {
   }
 });
 
-// Update the user's hostsfile, unless they specify --no-hosts
-if( process.argv.indexOf('--no-hosts') === -1 ) {
+// Update the user's hostsfile if they are sudo, unless they specify --no-hosts
+if( process.argv.indexOf('--no-hosts') === -1 && process.env.SUDO_UID) {
 
   hf.readHostsFile(function (err, original) {
     if( err ) throw err;
@@ -46,6 +46,8 @@ if( process.argv.indexOf('--no-hosts') === -1 ) {
     });
   });
 
+} else {
+  console.log("You'll need to manually update your hostsfile.");
 }
 
 // Boot up the proxy server!
