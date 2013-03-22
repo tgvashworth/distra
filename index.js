@@ -6,16 +6,39 @@ var argv = require('optimist').argv
   , spawn = require('child_process').spawn
   , home_dir = process.env.HOME
   , config_file = path.resolve(home_dir, '.distra.json')
-  , port = process.argv[2] || argv.port || process.env.PORT || 8000;
+  , port = process.argv[2] || argv.port || process.env.PORT || 8000
+  , file_created = false;
+
+// ==================================
+// Create the configuration file if it doesn't exist
+// ==================================
 
 try {
   if (!fs.existsSync(config_file) ||
       fs.readFileSync(config_file, 'utf8') === '') {
     console.log("Missing or empty config file. Creating it.");
     fs.writeFileSync(config_file, '{}', 'utf8');
+    file_created = true;
   }
 } catch (e) {
-  throw new Error("Could not open or create config file.");
+  console.log("Could not open or create config file.", e);
+  process.exit(1);
+}
+
+// ==================================
+// If we just created the file and we're running as root, chown the file
+// to the user so that distra can add hosts.
+// ==================================
+
+try {
+  if (file_created && process.env.SUDO_UID) {
+    fs.chownSync(config_file,
+                 parseInt(process.env.SUDO_UID, 10),
+                 parseInt(process.env.SUDO_GID, 10));
+  }
+} catch (e) {
+  console.log("Could not chown config file.", e);
+  process.exit(1);
 }
 
 // ======================
