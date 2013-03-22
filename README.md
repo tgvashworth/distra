@@ -41,9 +41,9 @@ To add a host, use `distra add`.
 distra add [host] [directory or url]
 ```
 
-The `host` and `directory or url` are both optional. If you omit the `directory or url` distra will serve the current directory you are in from the using the `host` you specify.
+The `host` and `directory or url` are both optional. If you omit the `directory or url` distra will serve your current directory.
 
-If you omit both, distra will serve the current directory with the name of the directory as the host.
+If you omit both, distra will serve the **current directory** with the **name of the directory** as the host.
 
 #### Try it:
 
@@ -63,6 +63,8 @@ To remove a host, use `distra rm`.
 distra rm [host]
 ```
 
+Again, `host` is optional - it will just use the directory name.
+
 ### The config file
 
 The config file will generally be found at `~/.distra.json`.
@@ -77,6 +79,12 @@ Here's an example.
 ```
 
 In the example above, requests made to `http://mysite.dev/` will be proxied through to the server running on port 4000 (a [Jekyll](https://github.com/mojombo/jekyll) server, perhaps). Requests made to `project` will be served static files from the directory specified.
+
+You can view your current config using `distra`:
+
+```bash
+distra config
+```
 
 ## Tips
 
