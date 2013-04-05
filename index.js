@@ -108,7 +108,8 @@ if( argv._[0] === 'rm' ) {
 
 // Show the current configuration
 if( argv._[0] === 'config' ) {
-  var config = require(config_file);
+  var config = require(config_file),
+      keys = Object.keys(config);
 
   var pad = function (str, len) {
     while( str.length < len ) {
@@ -117,7 +118,13 @@ if( argv._[0] === 'config' ) {
     return str;
   };
 
-  Object.keys(config).forEach(function (host) {
+  // One argument passed.
+  // Use as hostname for current dir.
+  if( argv._.length >= 2 ) {
+    keys = [argv._[1]];
+  }
+
+  keys.forEach(function (host) {
     console.log('%s : %s', pad(host, 25), config[host]);
   });
 
