@@ -20,13 +20,20 @@ var connect = require('connect')
 static_server
   .use(connect.logger('dev'));
 
+var createStaticServer = function (path) {
+  var server = connect();
+  server.use(gzippo.staticGzip(path))
+        .use(connect.directory(path));
+  return server;
+};
+
 // Store hostnames for the hostsfile
 var hosts = [];
 
 Object.keys(config).forEach(function (host) {
   hosts.push({ip: '127.0.0.1', names: [host]});
   if( config[host].slice(0,1) === '/' ) {
-    static_server.use(connect.vhost(host, gzippo.staticGzip(config[host])));
+    static_server.use(connect.vhost(host, createStaticServer(config[host])));
     proxy_options.router[host] = host + ':' + port.static_server;
   } else {
     proxy_options.router[host] = config[host];
