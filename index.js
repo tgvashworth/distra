@@ -47,7 +47,7 @@ try {
 
 var config = require(config_file)
   , target = path.resolve()
-  , host = path.basename(target);
+  , host = path.basename(target).toLowerCase();
 
 // Add a new host
 if( argv._[0] === 'add' ) {
@@ -59,7 +59,7 @@ if( argv._[0] === 'add' ) {
   // One argument passed.
   // Use as hostname for current dir.
   if( argv._.length >= 2 ) {
-    host = argv._[1];
+    host = ('' + argv._[1]).toLowerCase();
   }
 
   // Two arguments passed.
@@ -91,7 +91,7 @@ if( argv._[0] === 'rm' ) {
   // One argument passed.
   // Remove that host.
   if( argv._.length >= 2 ) {
-    host = argv._[1];
+    host = ('' + argv._[1]).toLowerCase();
   }
 
   if( !config[host] ) {
