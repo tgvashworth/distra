@@ -107,7 +107,7 @@ if( argv._[0] === 'rm' ) {
 }
 
 // Show the current configuration
-if( argv._[0] === 'config' ) {
+if( argv._[0] === 'config' || argv._[0] === 'ls' ) {
   var config = require(config_file),
       keys = Object.keys(config);
 
@@ -127,6 +127,36 @@ if( argv._[0] === 'config' ) {
   keys.forEach(function (host) {
     console.log('%s : %s', pad(host, 25), config[host]);
   });
+
+  process.exit();
+}
+
+// Help
+if( argv._[0] === 'help' || argv.help || argv.h ) {
+
+  console.log([
+    '',
+    '  Usage: distra [command] [arguments]',
+    '',
+    '  With no arguments, distra starts up based on the config in',
+    '  ~/.distra.json. You can supply a port as an argument:',
+    '',
+    '    distra [port]',
+    '',
+    '  Commands:',
+    '',
+    '    add <host> <path/url>  Add a host for distra to serve or proxy',
+    '                             <host> defaults to name of current directory',
+    '                             <path/url> defaults to current path',
+    '    rm <host>              Remove a host',
+    '                             <host> defaults to name of current directory',
+    '    config, ls <host>      Display distra\'s current configuration',
+    '                             If <host> is supplied, only config for that host is shown',
+    '    help, -h, --help       Show this help',
+    '',
+    '  For more, see http://github.com/phuu/distra',
+    ''
+  ].join('\n'));
 
   process.exit();
 }
