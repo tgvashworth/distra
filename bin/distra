@@ -4,11 +4,21 @@ var argv = require('optimist').argv
   , fs = require('fs')
   , path = require('path')
   , tabtab = require('tabtab')
+  , updateNotifier = require('update-notifier')
   , spawn = require('child_process').spawn
   , home_dir = process.env.HOME
   , config_file = path.resolve(home_dir, '.distra.json')
   , port = process.argv[2] || argv.port || process.env.PORT || 8000
   , file_created = false;
+
+// Checks for available update
+var notifier = updateNotifier({
+  packagePath: '../package.json',
+  packageName: 'distra'
+});
+if (notifier.update) {
+  notifier.notify();
+}
 
 // ==================================
 // Create the configuration file if it doesn't exist
