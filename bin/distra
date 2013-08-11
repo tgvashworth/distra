@@ -3,6 +3,7 @@
 var argv = require('optimist').argv
   , fs = require('fs')
   , path = require('path')
+  , tabtab = require('tabtab')
   , spawn = require('child_process').spawn
   , home_dir = process.env.HOME
   , config_file = path.resolve(home_dir, '.distra.json')
@@ -48,6 +49,23 @@ try {
 var config = require(config_file)
   , target = path.resolve()
   , host = path.basename(target).toLowerCase();
+
+// Tab-completion
+// Complete the regular distra commands and all configured hosts names
+var cmd_list = ['add', 'rm', 'config', 'help']
+  , hosts = Object.keys(config)
+  , completions = cmd_list.concat(hosts).filter(function (val) {
+      return !!val;
+    });
+if( argv._[0] === 'completion' ) {
+  return tabtab.complete('distra', function (err, data) {
+    // simply return here if there's an error or data not provided.
+    if( err || !data ) { return; }
+
+    // Show commands and hosts
+    return tabtab.log(completions, data);
+  });
+}
 
 // Add a new host
 if( argv._[0] === 'add' ) {
@@ -178,7 +196,7 @@ var reboot = (function () {
   return function () {
     if( distra ) distra.kill();
     console.log('\n========= restarting =========\n');
-    distra = spawn('node', [path.resolve(__dirname, 'distra.js'), config_file].concat(process.argv.slice(2)));
+    distra = spawn('node', [path.resolve(__dirname, '../distra.js'), config_file].concat(process.argv.slice(2)));
     attach(distra);
   };
 }());

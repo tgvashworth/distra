@@ -4,7 +4,7 @@
   "description": "A vhost proxy doodad thing.",
   "preferGlobal": "true",
   "bin": {
-    "distra": "index.js"
+    "distra": "bin/distra"
   },
   "main": "index.js",
   "scripts": {},
@@ -16,6 +16,7 @@
     "http-proxy": "~0.8.7",
     "hostsfile": "~1.0.0",
     "optimist": "~0.3.5",
-    "gzippo": "~0.2.0"
+    "gzippo": "~0.2.0",
+    "tabtab": "0.0.2"
   }
 }

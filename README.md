@@ -98,6 +98,12 @@ I recommend starting on port 80 so you don't have to mess around with ports!
 
 `$ sudo distra 80`
 
+### Tab Completion
+
+If you use bash or zsh, why not bring tears of joy to your eye-holes and enable distra's tab completion?
+
+Just add `. <(distra completion)` to your `~/.bashrc` or `~/.zshrc`. Hot.
+
 ## License
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
