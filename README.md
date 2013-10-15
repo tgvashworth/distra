@@ -12,9 +12,10 @@ I had so many servers running, particularly serving static files, that I never k
 
 ## Super-quick setup
 
-Start distra on port 80:
+Install and start distra on port 80:
 
 ```shell
+$ npm install -g distra
 $ sudo distra 80
 ```
 

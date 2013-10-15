@@ -92,7 +92,7 @@ if( argv._[0] === 'add' ) {
   } else {
     config[host] = target;
     fs.writeFileSync(config_file, JSON.stringify(config, null, 2));
-    console.log("Host %s pointing to %s added.", host, target);
+    console.log("Host http://%s/ pointing to %s added.", host, target);
   }
 
   process.exit();
@@ -118,7 +118,7 @@ if( argv._[0] === 'rm' ) {
   } else {
     delete config[host];
     fs.writeFileSync(config_file, JSON.stringify(config, null, 2));
-    console.log("Host %s removed.", host);
+    console.log("Host http://%s/ removed.", host);
   }
 
   process.exit();
