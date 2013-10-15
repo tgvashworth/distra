@@ -10,6 +10,24 @@ It also adds to your hosts file (safely) so you never have worry about that eith
 
 I had so many servers running, particularly serving static files, that I never knew what was being served and on which port. So I built this so I'd never have to care again!
 
+## Super-quick setup
+
+Start distra on port 80:
+
+```shell
+$ sudo distra 80
+```
+
+In another window, find some static files and set distra up to serve them:
+
+```shell
+$ cd some-project
+$ distra add
+Host http://some-project/ pointing to /path/to/some-project added.
+```
+
+Done.
+
 ## Install
 
 Distra requires:
