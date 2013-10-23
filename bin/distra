@@ -3,6 +3,7 @@
 var argv = require('optimist').argv
   , fs = require('fs')
   , path = require('path')
+  , pkg = require('../package')
   , tabtab = require('tabtab')
   , spawn = require('child_process').spawn
   , home_dir = process.env.HOME
@@ -52,7 +53,7 @@ var config = require(config_file)
 
 // Tab-completion
 // Complete the regular distra commands and all configured hosts names
-var cmd_list = ['add', 'rm', 'config', 'help']
+var cmd_list = ['add', 'rm', 'config', 'help', 'version']
   , hosts = Object.keys(config)
   , completions = cmd_list.concat(hosts).filter(function (val) {
       return !!val;
@@ -149,6 +150,12 @@ if( argv._[0] === 'config' || argv._[0] === 'ls' ) {
   process.exit();
 }
 
+// Version
+if( argv._[0] === 'version' || argv.version || argv.v ) {
+  console.log(pkg.version);
+  process.exit();
+}
+
 // Help
 if( argv._[0] === 'help' || argv.help || argv.h ) {
 
@@ -163,14 +170,15 @@ if( argv._[0] === 'help' || argv.help || argv.h ) {
     '',
     '  Commands:',
     '',
-    '    add <host> <path/url>  Add a host for distra to serve or proxy',
-    '                             <host> defaults to name of current directory',
-    '                             <path/url> defaults to current path',
-    '    rm <host>              Remove a host',
-    '                             <host> defaults to name of current directory',
-    '    config, ls <host>      Display distra\'s current configuration',
-    '                             If <host> is supplied, only config for that host is shown',
-    '    help, -h, --help       Show this help',
+    '    add <host> <path/url>   Add a host for distra to serve or proxy',
+    '                              <host> defaults to name of current directory',
+    '                              <path/url> defaults to current path',
+    '    rm <host>               Remove a host',
+    '                              <host> defaults to name of current directory',
+    '    config, ls <host>       Display distra\'s current configuration',
+    '                              If <host> is supplied, only config for that host is shown',
+    '    help, -h, --help        Show this help',
+    '    version, -v, --version  Display current distra version',
     '',
     '  For more, see http://github.com/phuu/distra',
     ''
