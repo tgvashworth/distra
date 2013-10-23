@@ -22,7 +22,7 @@ static_server
 
 var createStaticServer = function (path) {
   var server = connect();
-  server.use(gzippo.staticGzip(path))
+  server.use(gzippo.staticGzip(path, { maxAge: 0 }))
         .use(connect.directory(path));
   return server;
 };
