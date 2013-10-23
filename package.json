@@ -1,6 +1,6 @@
 {
   "name": "distra",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "A vhost proxy doodad thing.",
   "preferGlobal": "true",
   "bin": {
