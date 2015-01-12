@@ -1,4 +1,5 @@
 var connect = require('connect')
+  , morgan = require('morgan')
   , http = require('http')
   , gzippo = require('gzippo')
   , http_proxy = require('http-proxy')
@@ -7,7 +8,7 @@ var connect = require('connect')
   , static_server = connect()
   , config = require(process.argv[2])
   , hosts_tag = 'distra'
-  , proxy_options = { hostnameOnly: true, router: {} }
+  , proxy_options = {}
   , port = {
       proxy: parseInt(process.argv[3], 10) || process.env.PORT || 9876,
       static_server: 9999
@@ -18,7 +19,7 @@ var connect = require('connect')
 
 // Log static requests
 static_server
-  .use(connect.logger('dev'));
+  .use(morgan('dev'));
 
 var createStaticServer = function (path) {
   var server = connect();
@@ -35,9 +36,9 @@ Object.keys(config).forEach(function (host) {
   hosts.push({ip: 'fe80::1%lo0', names: [host]});
   if( config[host].slice(0,1) === '/' ) {
     static_server.use(connect.vhost(host, createStaticServer(config[host])));
-    proxy_options.router[host] = host + ':' + port.static_server;
+    proxy_options.target = 'http://' + host + ':' + port.static_server;
   } else {
-    proxy_options.router[host] = config[host];
+    proxy_options.target = 'http://' + config[host];
   }
 });
 
