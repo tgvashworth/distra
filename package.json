@@ -13,8 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "connect": "~2.7.1",
-    "http-proxy": "~0.8.7",
     "hostsfile": "~1.0.0",
+    "http-proxy": "^0.10.4",
     "optimist": "~0.3.5",
     "gzippo": "~0.2.0",
     "tabtab": "0.0.2"
